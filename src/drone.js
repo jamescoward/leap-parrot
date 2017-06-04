@@ -1,3 +1,5 @@
+const { createDashboard } = require('./dashboard');
+
 function isLaunchGesture(velocity) {
   return velocity > 1300;
 }
@@ -11,6 +13,7 @@ class Drone {
   constructor() {
     this.lastLandEvent = Date.now();
     this.hasTakenOff = false;
+    this.dashboard = createDashboard();
   }
 
   isFlying() {
@@ -56,14 +59,21 @@ class Drone {
   }
 
   updateFlightParams(params) {
+    this.dashboard.update(Object.assign({isFlying: this.isFlying()}, params));
+  }
 
+  startDisplay() {
+    this.dashboard.start();
+  }
+
+  clearDisplay() {
+    this.dashboard.clear();
   }
 
   updateAltitude(height) {
-    
+
   }
 
 }
-
 
 module.exports = Drone;

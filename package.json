@@ -18,6 +18,7 @@
   "author": "James Coward",
   "license": "ISC",
   "dependencies": {
+    "blessed": "^0.1.81",
     "leapjs": "^0.6.4"
   }
 }
