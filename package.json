@@ -1,0 +1,23 @@
+{
+  "name": "leap-parrot",
+  "version": "0.0.1",
+  "description": "Lets you control your Parrot MiniDrone with a Leap Motion",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Leap",
+    "Motion",
+    "parrot",
+    "drone",
+    "minidrone",
+    "gesture",
+    "control"
+  ],
+  "author": "James Coward",
+  "license": "ISC",
+  "dependencies": {
+    "leapjs": "^0.6.4"
+  }
+}
