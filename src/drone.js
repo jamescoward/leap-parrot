@@ -1,4 +1,5 @@
 const { createDashboard } = require('./dashboard');
+const { getHandHeight } = require('./leapHand');
 
 function isLaunchGesture(velocity) {
   return velocity > 1300;
@@ -11,6 +12,7 @@ function isLandGesture(velocity) {
 class Drone {
 
   constructor() {
+    this.baseHeight = null;
     this.lastLandEvent = Date.now();
     this.hasTakenOff = false;
     this.dashboard = createDashboard();
@@ -58,8 +60,29 @@ class Drone {
     this.land(vel);
   }
 
+  setBaseHeight(frame) {
+    if(frame.hands.length && !this.baseHeight) {
+      this.baseHeight = getHandHeight(frame);
+    } else if (!frame.hands.length) {
+      this.baseHeight = null;
+    }
+  }
+
   updateFlightParams(params) {
-    this.dashboard.update(Object.assign({isFlying: this.isFlying()}, params));
+    const paramsClone = Object.assign({}, params);
+
+    if(Math.abs(this.baseHeight - params.height) > 10) {
+      const adjusted = params.height - this.baseHeight;
+      paramsClone.altitude = adjusted;
+      this.baseHeight = params.height;
+    } else {
+      paramsClone.altitude = 0;
+    }
+
+    this.dashboard.update(Object.assign({
+      isFlying: this.isFlying(),
+      baseHeight: this.baseHeight,
+    }, paramsClone));
   }
 
   startDisplay() {
@@ -69,11 +92,6 @@ class Drone {
   clearDisplay() {
     this.dashboard.clear();
   }
-
-  updateAltitude(height) {
-
-  }
-
 }
 
 module.exports = Drone;

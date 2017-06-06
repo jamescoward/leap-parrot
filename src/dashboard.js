@@ -51,13 +51,16 @@ function createDashboard() {
     pitch,
     yaw,
     roll,
+    altitude,
+    baseHeight,
     isFlying,
   }) {
-
     table.setData([
       ['Pitch:', `${Math.round(pitch)}°`],
       ['Yaw:', `${Math.round(yaw)}°`],
       ['Roll:', `${Math.round(roll)}°`],
+      ['Base Height:', `${Math.round(baseHeight)}mm`],      
+      ['Altitude:', `${Math.round(altitude)}mm`],      
       ['Is Flying:', `${isFlying}`],
     ]);
     screen.render();

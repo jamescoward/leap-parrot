@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "blessed": "^0.1.81",
-    "leapjs": "^0.6.4"
+    "leapjs": "^0.6.4",
+    "parrot-minidrone": "^1.1.1"
   }
 }

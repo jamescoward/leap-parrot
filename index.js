@@ -26,9 +26,10 @@ controller.on('frame', frame => {
   const flightParams = getHandParams(frame);
   const height = getHandHeight(frame);
 
+  drone.setBaseHeight(frame);
+  flightParams.height = height;
   drone.doVelocityAction(vel);
-  drone.updateFlightParams(flightParams);
-  drone.updateAltitude(height);
+  drone.updateFlightParams(Object.assign({height}, flightParams));
 });
 
 controller.connect();
