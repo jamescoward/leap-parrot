@@ -49,8 +49,9 @@ function toDegrees(rad) {
 function getHandParams(frame) {
   if (frame.hands.length) {
     return {
-      roll: scaleRotation(getHandRoll(frame)),
-      pitch: scaleRotation(getHandPitch(frame)),
+      // pitch and roll are inverted
+      roll: scaleRotation(getHandRoll(frame)) * -1,
+      pitch: scaleRotation(getHandPitch(frame)) * -1,
       yaw: scaleRotation(getHandYaw(frame)),
     }
   }
@@ -64,9 +65,6 @@ function getHandParams(frame) {
 
 module.exports = {
   getHandHeight,
-  getHandPitch,
-  getHandRoll,
-  getHandYaw,
   getHandVelocityInZ,
   getHandParams,
 }

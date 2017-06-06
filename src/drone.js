@@ -1,3 +1,4 @@
+const MiniDrone = require('parrot-minidrone');
 const { createDashboard } = require('./dashboard');
 const { getHandHeight } = require('./leapHand');
 
@@ -15,11 +16,15 @@ class Drone {
     this.baseHeight = null;
     this.lastLandEvent = Date.now();
     this.hasTakenOff = false;
-    this.dashboard = createDashboard();
+    // this.dashboard = createDashboard();
+    this.miniDroneController = new MiniDrone({
+      autoconnect: true,
+      maxAltitude: 2,
+    });
   }
 
   isFlying() {
-    return true;
+    return this.miniDroneController.isFlying();
   }
 
   canChangeLaunchState() {
@@ -29,11 +34,10 @@ class Drone {
   launch(velocity) {
     if (!this.isFlying()
       && this.canChangeLaunchState()
-      && this.isLaunchGesture(Gesturevelocity)
+      && isLaunchGesture(velocity)
     ) {
       this.lastLandEvent = Date.now();
-
-      // LAUNCH
+      this.miniDroneController.takeOff();
 
       return true
     }
@@ -41,13 +45,13 @@ class Drone {
   }
 
   land(velocity) {
-    if (!this.isFlying()
+    if (this.isFlying()
       && this.canChangeLaunchState()
-      && this.isLandGesture(velocity)
+      && isLandGesture(velocity)
     ) {
       this.lastLandEvent = Date.now();
 
-      // LAND      
+      this.miniDroneController.land();
 
       return true
     }
@@ -71,26 +75,28 @@ class Drone {
   updateFlightParams(params) {
     const paramsClone = Object.assign({}, params);
 
-    if(Math.abs(this.baseHeight - params.height) > 10) {
+    if(this.baseHeight - params.height) {
       const adjusted = params.height - this.baseHeight;
-      paramsClone.altitude = adjusted;
+      paramsClone.altitude = adjusted * 20;
       this.baseHeight = params.height;
     } else {
       paramsClone.altitude = 0;
     }
 
-    this.dashboard.update(Object.assign({
-      isFlying: this.isFlying(),
-      baseHeight: this.baseHeight,
-    }, paramsClone));
+    this.miniDroneController.setFlightParams(paramsClone);
+
+    // this.dashboard.update(Object.assign({
+    //   isFlying: this.isFlying(),
+    //   baseHeight: this.baseHeight,
+    // }, paramsClone));
   }
 
   startDisplay() {
-    this.dashboard.start();
+    // this.dashboard.start();
   }
 
   clearDisplay() {
-    this.dashboard.clear();
+    // this.dashboard.clear();
   }
 }
 

@@ -33,4 +33,3 @@ controller.on('frame', frame => {
 });
 
 controller.connect();
-
