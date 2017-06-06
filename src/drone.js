@@ -14,17 +14,12 @@ class Drone {
 
   constructor() {
     this.baseHeight = null;
-    this.battery = 100;
-    this.connected = false;
     this.lastLandEvent = Date.now();
     this.hasTakenOff = false;
     this.miniDroneController = new MiniDrone({
       autoconnect: true,
       maxAltitude: 2,
     });
-
-    this.miniDroneController.on('connected', () => this.connected = true);
-    this.miniDroneController.on('batteryStatusChange', chargeLevel => this.battery = chargeLevel);
   }
 
   isFlying() {
