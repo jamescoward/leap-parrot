@@ -14,13 +14,17 @@ class Drone {
 
   constructor() {
     this.baseHeight = null;
+    this.battery = 100;
+    this.connected = false;
     this.lastLandEvent = Date.now();
     this.hasTakenOff = false;
-    // this.dashboard = createDashboard();
     this.miniDroneController = new MiniDrone({
       autoconnect: true,
       maxAltitude: 2,
     });
+
+    this.miniDroneController.on('connected', () => this.connected = true);
+    this.miniDroneController.on('batteryStatusChange', chargeLevel => this.battery = chargeLevel);
   }
 
   isFlying() {
@@ -77,26 +81,13 @@ class Drone {
 
     if(this.baseHeight - params.height) {
       const adjusted = params.height - this.baseHeight;
-      paramsClone.altitude = adjusted * 20;
+      paramsClone.altitude = adjusted * 20; // applying some very scientifc scaling
       this.baseHeight = params.height;
     } else {
       paramsClone.altitude = 0;
     }
 
     this.miniDroneController.setFlightParams(paramsClone);
-
-    // this.dashboard.update(Object.assign({
-    //   isFlying: this.isFlying(),
-    //   baseHeight: this.baseHeight,
-    // }, paramsClone));
-  }
-
-  startDisplay() {
-    // this.dashboard.start();
-  }
-
-  clearDisplay() {
-    // this.dashboard.clear();
   }
 }
 

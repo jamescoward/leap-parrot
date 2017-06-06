@@ -17,8 +17,6 @@ controller.on('connect', function () {
 
 controller.on('streamingStarted', () => {
   console.log('Started recieving data');  
-  drone.clearDisplay();
-  drone.startDisplay();
 })
 
 controller.on('frame', frame => {
